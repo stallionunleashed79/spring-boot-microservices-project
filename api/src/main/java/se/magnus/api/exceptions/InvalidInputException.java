@@ -1,4 +1,4 @@
-package se.magnus.api.core.exceptions;
+package se.magnus.api.exceptions;
 
 public class InvalidInputException extends RuntimeException {
   public InvalidInputException() {}
