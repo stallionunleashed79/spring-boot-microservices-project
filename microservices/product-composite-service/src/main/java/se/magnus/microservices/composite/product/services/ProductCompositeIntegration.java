@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import se.magnus.api.core.product.ProductService;
 import se.magnus.api.core.product.Product;
@@ -52,13 +53,18 @@ public class ProductCompositeIntegration implements ProductService, ReviewServic
     private String productServiceUrl;
     private String recommendationServiceUrl;
     private String reviewServiceUrl;
+    private RestClient restClient = RestClient.create();
 
     @Override
     public Product getProduct(int productId) {
         try {
-            final String url = "http://" + productServiceHost + ":" + productServicePort + "/product/" + productId;
+            final String url = "http://" + productServiceHost + ":" + productServicePort + "/product/{productId}";
             LOG.debug("Will call getProduct API on URL: {}", url);
-            Product product = restTemplate.getForObject(url, Product.class);
+            final Product product = restClient.get()
+                    .uri(url, productId)
+                    .retrieve()
+                    .body(Product.class);
+            assert product != null;
             LOG.debug("Found a product with id: {}", product.productId());
             return product;
         } catch (HttpClientErrorException ex) {
