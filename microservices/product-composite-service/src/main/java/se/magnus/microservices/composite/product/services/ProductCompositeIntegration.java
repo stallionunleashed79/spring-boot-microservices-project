@@ -87,7 +87,8 @@ public class ProductCompositeIntegration implements ProductService, ReviewServic
             final List<Review> reviews = restClient.get()
                     .uri(url, productId)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<List<Review>>() {});
+                    .body(new ParameterizedTypeReference<>() {
+                    });
 
             assert reviews != null;
             LOG.debug("Found reviews for product with id: {}", productId);
@@ -107,7 +108,8 @@ public class ProductCompositeIntegration implements ProductService, ReviewServic
             final List<Recommendation> recommendations = restClient.get()
                     .uri(url, productId)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<List<Recommendation>>() {});
+                    .body(new ParameterizedTypeReference<>() {
+                    });
 
             assert recommendations != null;
             LOG.debug("Found recommendations for product with id: {}", productId);
